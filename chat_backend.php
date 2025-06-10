@@ -4,7 +4,7 @@ $db = "college_helpdesk";
 $user = "root";
 $pass = ""; // change if you have a password
 
-$conn = new mysqli($host, $user, $pass, $db);
+$conn = new mysqli('sql203.infinityfree.com', 'epiz_XXXXXXX', 'prat1019', 'if0_39199339_college_helpdesk');
 if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
 
 $action = $_POST['action'] ?? '';
