@@ -6,7 +6,8 @@ $password = ""; // use your MySQL password if set
 $dbname = "college_helpdesk";
 
 // Create connection
-$conn = new mysqli($host, $user, $password, $dbname);
+$conn = new mysqli('sql203.infinityfree.com', 'epiz_XXXXXXX', 'prat1019', 'if0_39199339_college_helpdesk');
+
 
 // Check connection
 if ($conn->connect_error) {
