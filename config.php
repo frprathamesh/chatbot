@@ -6,7 +6,7 @@ define('DB_PASS', '');
 define('DB_NAME', 'college_helpdesk');
 
 function getDBConnection() {
-    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    $conn = new mysqli('sql203.infinityfree.com', 'epiz_XXXXXXX', 'prat1019', 'if0_39199339_college_helpdesk');
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
