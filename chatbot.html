@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ask Help Bot</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      color: #333;
+    }
+
+    header {
+      background-color: #004080;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 600px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      overflow: hidden;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      background: #e9f0ff;
+    }
+
+    .message {
+      margin: 10px 0;
+      max-width: 70%;
+      padding: 10px 15px;
+      border-radius: 20px;
+      line-height: 1.3;
+      font-size: 1rem;
+    }
+
+    .user {
+      align-self: flex-end;
+      background-color: #004080;
+      color: white;
+      border-bottom-right-radius: 0;
+    }
+
+    .bot {
+      align-self: flex-start;
+      background-color: #dbe9ff;
+      color: #004080;
+      border-bottom-left-radius: 0;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #ccc;
+    }
+
+    .chat-input input {
+      flex: 1;
+      border: none;
+      padding: 15px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .chat-input button {
+      border: none;
+      padding: 15px 20px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #sendBtn {
+      background-color: #004080;
+      color: white;
+    }
+
+    #sendBtn:hover {
+      background-color: #002a5c;
+    }
+
+    #micBtn {
+      background-color: #ffaa00;
+      color: white;
+    }
+
+    #micBtn:hover {
+      background-color: #cc8800;
+    }
+
+    .clear-btn {
+      background: #cc0000;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-weight: bold;
+      margin: 10px auto;
+      border-radius: 8px;
+      cursor: pointer;
+      max-width: 600px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: background-color 0.3s;
+    }
+
+    .clear-btn:hover {
+      background: #990000;
+    }
+
+    .home-btn {
+      background: #004080;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-weight: bold;
+      margin: 10px auto;
+      border-radius: 8px;
+      cursor: pointer;
+      max-width: 600px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: background-color 0.3s;
+    }
+  </style>
+</head>
+<body>
+
+<header>Ask Help Bot</header>
+
+<button class="home-btn" onclick="window.location.href='index.html'">Home</button>
+
+<div class="chat-container" id="chatContainer">
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input">
+    <input type="text" id="userInput" placeholder="Type your question..." autocomplete="off" />
+    <button id="micBtn" title="Speak">🎤</button>
+    <button id="sendBtn">Send</button>
+  </div>
+</div>
+
+<button class="clear-btn" id="clearChat">Clear Chat History</button>
+
+<script>
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+const userEmail = currentUser?.email || 'guest';
+  const chatMessages = document.getElementById('chatMessages');
+  const userInput = document.getElementById('userInput');
+  const sendBtn = document.getElementById('sendBtn');
+  const clearChatBtn = document.getElementById('clearChat');
+  const micBtn = document.getElementById('micBtn');
+
+  function loadChatHistory() {
+  fetch('chat_backend.php', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `action=fetch&email=${encodeURIComponent(userEmail)}`
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success && data.chats) {
+      chatMessages.innerHTML = '';
+      data.chats.forEach(chat => {
+        appendMessage(chat.message, chat.sender, false);
+      });
+    }
+  });
+}
+
+  function saveMessage(message, sender) {
+  fetch('chat_backend.php', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `action=send&email=${encodeURIComponent(userEmail)}&message=${encodeURIComponent(message)}&sender=${sender}`
+  });
+}
+
+  function appendMessage(message, sender, save = true) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `message ${sender}`;
+    msgDiv.textContent = message;
+    chatMessages.appendChild(msgDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    if (save) saveMessage(message, sender);
+  }
+
+  function getBotResponse(userInput) {
+    const input = userInput.toLowerCase();
+
+    if (input.includes("college name")) return "Our college name is Global Institute of Technology.";
+    if (input.includes("contact")) return "You can contact us at support@college.edu or call +91-9876543210.";
+    if (input.includes("academic calendar")) return "The academic calendar includes two semesters: July–December and January–June. Exams take place in Nov/Dec and April/May respectively.";
+    if (input.includes("staff")) return "Our college has over 120 qualified staff including faculty, lab assistants, and admin personnel.";
+    if (input.includes("campus facility") || input.includes("facilities")) return "Facilities include Wi-Fi campus, digital library, computer labs, sports complex, cafeteria, hostel, transport, and auditorium.";
+    if (input.includes("festival")) return "We celebrate Annual Day, Cultural Fest, Sports Week, Tech Fest, Diwali, Holi, and Independence Day with full enthusiasm.";
+    if (input.includes("mba")) return "MBA (2 years): ₹1,20,000/year. Admission via entrance exams like CAT/MAT followed by group discussion and personal interview.";
+    if (input.includes("mca")) return "MCA (3 years): ₹90,000/year. Admission through MAH-MCA-CET entrance exam.";
+    if (input.includes("bca")) return "BCA (3 years): ₹70,000/year. Admission is merit-based on 12th marks (Science/Commerce with Mathematics).";
+    if (input.includes("b.a")) return "BA (3 years): ₹30,000/year. Admission based on 12th-grade marks.";
+    if (input.includes("bcom")) return "B.Com (3 years): ₹35,000/year. Admission based on 12th-grade marks in commerce stream.";
+    if (input.includes("mcom")) return "M.Com (2 years): ₹45,000/year. Admission through merit list of graduation marks.";
+    if (input.includes("bsc")) return "B.Sc (3 years): ₹40,000/year. Admission for Science stream 12th pass students.";
+    if (input.includes("bcs")) return "BCS (3 years): ₹65,000/year. Admission via 12th marks (Science stream only).";
+    if (input.includes("timing") || input.includes("college time")) return "College timings: BCA/BCS - 8 AM to 1 PM, BA/B.Com/B.Sc - 9 AM to 2 PM, MCA/MBA/M.Com - 10 AM to 4 PM.";
+    if (input.includes("scholarship")) return "Scholarships available:\n1. Government Scholarships for SC/ST/OBC/Minority\n2. Merit-Based Scholarships\n3. Economically Weaker Section Aid\n4. Sports Scholarships\nApply through student portal with valid documents.";
+    if (input.includes("admission process")) return "Visit our website and go to the Admissions section. Choose your course, fill out the application form, upload documents, and submit. You’ll be contacted for further process.";
+    if (input.includes("placement") || input.includes("job")) return "We have a dedicated placement cell that organizes campus recruitment drives. Top recruiters include Infosys, Wipro, TCS, and HCL. Average package is ₹3.5 LPA.";
+    if (input.includes("library")) return "Our digital library has over 50,000 e-books, journals, and research papers. Physical library open from 9 AM to 6 PM on weekdays.";
+    if (input.includes("hostel")) return "Hostel facilities available";
+    if (input.includes("canteen") || input.includes("cafeteria")) return "The canteen serves healthy and affordable meals from 8 AM to 7 PM. Menu includes vegetarian and non-vegetarian options.";
+    if (input.includes("sports")) return "We have facilities for cricket, football, basketball, badminton, table tennis, and athletics. Regular tournaments are held.";
+    if (input.includes("events") || input.includes("activities")) return "We organize various events like cultural fests, technical workshops, guest lectures, and sports meets throughout the year.";
+    if (input.includes("faculty") || input.includes("teachers")) return "Our faculty includes PhD holders and industry experts with years of teaching experience.";
+    if (input.includes("admission date") || input.includes("admission schedule")) return "Admissions for the next academic year start in May. Keep an eye on our website for updates.";
+    if (input.includes("fees") || input.includes("fees structure")) return "Fee structure varies by course. For detailed information, please visit our website or contact the admissions office.";
+    if (input.includes("contact us") || input.includes("support")) return "You can reach us at Phone: +91-9876543210 or Email:support@college.edu";
+    if (input.includes("placement cell") || input.includes("placement office")) return "Our placement cell assists students with job placements, internships, and career counseling. Contact them at";
+    if (input.includes("placement cell email")) return "support@college.edu";
+    if (input.includes("placement cell phone")) return "+91-9876543210";
+    if (input.includes("admission criteria") || input.includes("eligibility")) return "Eligibility varies by course. Generally, 12th pass for undergraduate courses and graduation for postgraduate courses. Specific entrance exams may apply.";
+    if (input.includes("events calendar") || input.includes("upcoming events")) return "Check our website for the latest events calendar. We have cultural fests, technical workshops, and sports meets scheduled throughout the year.";
+    if (input.includes("feedback") || input.includes("suggestion")) return "We value your feedback! Please share your suggestions via email at support@college.edu";
+
+    return "I'm here to help! Could you please clarify your question?";
+  }
+
+  function sendMessage() {
+    const message = userInput.value.trim();
+    if (!message) return;
+
+    appendMessage(message, 'user');
+    userInput.value = '';
+
+    setTimeout(() => {
+      const botResponse = getBotResponse(message);
+      appendMessage(botResponse, 'bot');
+    }, 600);
+  }
+
+ function clearChatHistory() {
+  if (confirm('Clear all your chat history?')) {
+    fetch('chat_backend.php', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: `action=clear&email=${encodeURIComponent(userEmail)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) chatMessages.innerHTML = '';
+    });
+  }
+}
+
+
+  sendBtn.addEventListener('click', sendMessage); 
+  userInput.addEventListener('keypress', e => {
+    if (e.key === 'Enter') sendMessage();
+  });
+  clearChatBtn.addEventListener('click', clearChatHistory);
+
+  // Voice Input
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (SpeechRecognition) {
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-IN';
+    recognition.interimResults = false;
+    recognition.continuous = false;
+
+    micBtn.addEventListener('click', () => {
+      recognition.start();
+      micBtn.textContent = '🎙️'; // Mic on
+    });
+
+    recognition.onresult = (event) => {
+      const speechToText = event.results[0][0].transcript;
+      userInput.value = speechToText;
+      micBtn.textContent = '🎤';
+      sendMessage();
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error", event.error);
+      micBtn.textContent = '🎤';
+    };
+
+    recognition.onend = () => {
+      micBtn.textContent = '🎤';
+    };
+  } else {
+    micBtn.disabled = true;
+    micBtn.title = "Speech Recognition not supported in your browser";
+  }
+
+  window.onload = loadChatHistory;
+</script>
+
+</body>
+</html>
