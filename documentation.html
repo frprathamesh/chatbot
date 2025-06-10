@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Help Desk - Documentation</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      background-color: #004080;
+      color: rgb(235, 235, 235);
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    nav {
+      background: #0066cc;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 10px;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover { text-decoration: underline; }
+    .hero {
+      background: url('https://source.unsplash.com/featured/?college,campus') no-repeat center center/cover;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #004080;
+      text-shadow: 1px 1px 3px #000;
+      margin-bottom: 20px;
+    }
+    .hero h1 { font-size: 2.5rem; }
+    section {
+      padding: 30px 20px;
+      max-width: 900px;
+      margin: 0 auto 30px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      color: #004080;
+      margin-bottom: 15px;
+    }
+    h1 { font-size: 2.2rem; }
+    h2 { font-size: 1.8rem; }
+    ul {
+      padding-left: 30px;
+      margin-bottom: 15px;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+    strong {
+      color: #0066cc;
+    }
+    footer {
+      background: #004080;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 30px;
+    }
+    @media (max-width: 600px) {
+      nav { gap: 10px; }
+      .hero h1 { font-size: 1.8rem; }
+      h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.5rem; }
+      section { padding: 20px 15px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="Collegehelpdesk.jpg" alt="College Help Desk Logo" style="height: 60px; vertical-align: middle; margin-right: 5px;">
+  <h1 style="display: inline; vertical-align: middle;">College Help Desk</h1>
+</header>
+
+<nav>
+  <a href="home_page.html ">Home</a>
+  <a href="#about">About</a>
+  <a href="#topics">Help Topics</a>
+  <a href="#faq">FAQs</a>
+  <a href="#documents">Documents</a>
+  <a href="#contact">Contact</a>
+  <a href="feedback.html">Feedback</a>
+  <a href="documentation.html">Documentation</a>
+</nav>
+
+<div class="hero">
+  <h1>Documentation</h1>
+</div>
+
+<section>
+  <h2>User Guide</h2>
+  <p>Welcome to the College Help Desk! Here’s how you can use our platform:</p>
+  <ul>
+    <li><strong>Login/Register:</strong> Click the Login or Register button to create an account or sign in.</li>
+    <li><strong>Ask Questions:</strong> Use the chatbot to ask any college-related questions. Select a department for more specific answers.</li>
+    <li><strong>Request Documents:</strong> Go to the Documents section to request or download certificates.</li>
+    <li><strong>Raise Tickets:</strong> If your question isn’t answered, raise a ticket for support staff.</li>
+    <li><strong>View Notifications:</strong> Check your profile for important updates and announcements.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Admin Guide</h2>
+  <p>Admins can manage the help desk by:</p>
+  <ul>
+    <li><strong>Managing FAQs:</strong> Add, edit, or remove frequently asked questions.</li>
+    <li><strong>Viewing Tickets:</strong> See and resolve open tickets from students.</li>
+    <li><strong>User Statistics:</strong> View user data and activity.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Developer Documentation</h2>
+  <p>Developers can contribute to the project by:</p>
+  <ul>
+    <li><strong>Setting up locally:</strong> Clone the repository and open index.html in a browser.</li>
+    <li><strong>Tech Stack:</strong> HTML, CSS, JavaScript. (For real projects: backend and database.)</li>
+    <li><strong>Deployment:</strong> Push to GitHub and deploy on Vercel, Netlify, or Firebase.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>FAQ</h2>
+  <ul>
+    <li><strong>How do I reset my password?</strong> Contact support for assistance.</li>
+    <li><strong>How do I update my profile?</strong> Go to your profile page.</li>
+    <li><strong>How do I contact support?</strong> Use the Contact section or raise a ticket.</li>
+  </ul>
+</section>
+
+<footer>
+  &copy; 2025 College Help Desk. All Rights Reserved.
+</footer>
+
+</body>
+</html>

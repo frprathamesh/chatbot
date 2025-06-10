@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bonafide Certificate</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .certificate-container {
+      border: 2px solid #004080;
+      padding: 30px;
+      margin: 20px 0;
+      background-color: #f9f9f9;
+    }
+    .download-btn {
+      background-color: #004080;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      display: inline-block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .download-btn:hover {
+      background-color: #0066cc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bonafide Certificate</h1>
+  
+  <div class="certificate-container">
+    <h2>COLLEGE NAME</h2>
+    <h3>BONAFIDE CERTIFICATE</h3>
+    
+    <p>This is to certify that <strong>[Student Name]</strong>, 
+    son/daughter of <strong>[Parent Name]</strong>, 
+    is a bonafide student of this institution.</p>
+    
+    <p>He/She is studying in <strong>[Course Name]</strong> 
+    during the academic year <strong>[Year]</strong>.</p>
+    
+    <p>This certificate is issued for <strong>[Purpose]</strong>.</p>
+    
+    <div style="margin-top: 50px;">
+      <div style="float: right; text-align: center;">
+        <p>Principal</p>
+        <p>Signature & Seal</p>
+      </div>
+      <div style="clear: both;"></div>
+    </div>
+  </div>
+  
+  <button class="download-btn" onclick="downloadCertificate()">Download Certificate</button>
+  
+  <script>
+    function downloadCertificate() {
+      // Create a temporary link
+      const link = document.createElement('a');
+      link.href = 'documents/bonafide.pdf';
+      link.download = 'Bonafide.pdf';
+      
+      // Append to body, click, and remove
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Fallback if download fails
+      setTimeout(() => {
+        if (!document.body.querySelector('iframe.download-frame')) {
+          alert('Download started. If it didn\'t work, right-click the button and select "Save link as"');
+        }
+      }, 2000);
+    }
+    
+    // Alternative method using iframe
+    function fallbackDownload() {
+      const iframe = document.createElement('iframe');
+      iframe.src = 'documents/bonafide.pdf';
+      iframe.style.display = 'none';
+      iframe.className = 'download-frame';
+      document.body.appendChild(iframe);
+    }
+  </script>
+</body>
+</html>

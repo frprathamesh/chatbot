@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feedback - College Help Desk</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      margin: 0;
+    }
+    header {
+      background-color: #004080;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    section {
+      padding: 40px 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #004080;
+      text-align: center;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #004080;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .success-message {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 15px;
+      display: none;
+      text-align: center;
+      font-weight: bold;
+    }
+    footer {
+      background-color: #004080;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+    .backbtn {
+      display: block;
+      margin: 20px auto 0;
+      background: #0066cc;
+    }
+    a {
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>College Help Desk</h1>
+  <p>We value your feedback!</p>
+</header>
+
+<section>
+  <h2 class="section-title">Feedback</h2>
+  <div class="card">
+    <form onsubmit="submitFeedback(event)">
+      <label for="fullName">Full Name:</label>
+      <input type="text" id="fullName" required />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" required />
+
+      <label for="rating">Rating:</label>
+      <select id="rating" required>
+        <option value="">-- Select Rating --</option>
+        <option value="5">⭐⭐⭐⭐⭐ - Excellent</option>
+        <option value="4">⭐⭐⭐⭐ - Good</option>
+        <option value="3">⭐⭐⭐ - Average</option>
+        <option value="2">⭐⭐ - Poor</option>
+        <option value="1">⭐ - Very Poor</option>
+      </select>
+
+      <label for="feedbackText">Your Feedback:</label>
+      <textarea id="feedbackText" rows="4" required></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+    <div id="feedbackMsg" class="success-message">Your feedback has been submitted successfully.</div>
+  </div>
+
+  <a href="home_page.html"><button class="backbtn">← Back to Home</button></a>
+</section>
+
+<footer>
+  &copy; 2025 College Help Desk. All Rights Reserved.
+</footer>
+
+<script>
+  function submitFeedback(event) {
+    event.preventDefault();
+    
+    const fullName = document.getElementById("fullName").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const rating = document.getElementById("rating").value;
+    const feedbackText = document.getElementById("feedbackText").value.trim();
+
+    if (!fullName || !email || !rating || !feedbackText) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    fetch("submit_feedback.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ fullName, email, rating, feedbackText })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === "success") {
+        document.getElementById("feedbackMsg").style.display = "block";
+        document.querySelector("form").reset();
+      } else {
+        alert(data.message || "Something went wrong.");
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      alert("Error submitting feedback.");
+    });
+  }
+</script>
+
+</body>
+</html>
